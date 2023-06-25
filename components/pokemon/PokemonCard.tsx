@@ -11,7 +11,8 @@ export const PokemonCard = ({pokemon}:Props) => {
   const {id,img,name}= pokemon
 
   const onClick=()=>{
-    router.push(`/pokemon/${pokemon.id}`)
+    // router.push(`/pokemon/${pokemon.id}`)
+    router.push(`/name/${pokemon.name}`)
   }
   return (
     <Grid key={id} xs={6} sm={3} md={2} xl={1}>
