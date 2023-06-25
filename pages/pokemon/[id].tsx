@@ -111,7 +111,7 @@ const PokemonPage = ({pokemon}:Props) => {
 
 // You should use getStaticPaths if you’re statically pre-rendering pages that use dynamic routes
 
-
+//staticPaths siempre necesita el staticProps
 export const getStaticPaths: GetStaticPaths = async (ctx) => {
   const pokemons151=[...Array(151)].map((value,index)=>`${index+1}`)
 
@@ -126,19 +126,29 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
     //     }
     //   }
     // ],
-    fallback: false
+    fallback: 'blocking'
   }
 }
 
 
 export const getStaticProps:GetStaticProps=async(ctx)=>{
   const {id} = ctx.params as {id:string}
-  
+  const pokemon= await getPokemonInfo(id)
+
+  if(!pokemon){
+    return {
+      redirect:{
+        destination:'/',
+        permanent: false
+      }
+    }
+  }
 
   return {
     props:{
-      pokemon:await getPokemonInfo(id)
-    }
+      pokemon
+    },
+    revalidate: 86400,// 60 * 60 * 24
   }
 }
 
